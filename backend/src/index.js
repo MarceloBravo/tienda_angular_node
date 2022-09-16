@@ -8,7 +8,7 @@ import bodyParser from 'body-parser';  //Necesario para atender las peticiones p
 
 import rolesRoutes from '../routes/roles.routes.js'
 import usuariosRoutes from '../routes/usuarios.routes.js'
-//import loginRoutes from '../routes/login.routes.js'
+import loginRoutes from '../routes/login.routes.js'
 import { sequelize } from '../db/database.js'
 
 const __filename = fileURLToPath(import.meta.url);
@@ -32,7 +32,7 @@ app.use(bodyParser.json()); //Permite recibir y entender los datos recibidos com
 
 app.use(rolesRoutes);
 app.use(usuariosRoutes);
-//app.use(loginRoutes)
+app.use(loginRoutes)
 
 import '../models/RolModel.js';
 import '../models/UsuarioModel.js';

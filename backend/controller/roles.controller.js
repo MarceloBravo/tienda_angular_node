@@ -2,8 +2,9 @@ import { RolModel } from "../models/RolModel.js"
 import { dateToStringDMY } from '../shared/functions.js'
 import Sequelize from "sequelize";
 import { sequelize } from '../db/database.js';
+import { regPerPage } from '../shared/constants.js'
 const Op = Sequelize.Op;
-const rowsPerPage = 10;
+const rowsPerPage = regPerPage;
 
 export const getRoles = async (req,res) => {
     try{

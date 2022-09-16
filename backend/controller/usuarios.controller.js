@@ -2,8 +2,9 @@ import { UsuarioModel } from "../models/UsuarioModel.js"
 import { dateToStringDMY } from '../shared/functions.js'
 import Sequelize from "sequelize";
 import { sequelize } from '../db/database.js';
+import { regPerPage } from '../shared/constants.js'
 const Op = Sequelize.Op;
-const rowsPerPage = 10;
+const rowsPerPage = regPerPage;
 const orderBy = [["apellido1","ASC"],["apellido2","ASC"],["nombres", "ASC"]]
 
 //Array con los atributos seleccionados a retornar por aquellas peticiones que devuelvan listados de usuarios
