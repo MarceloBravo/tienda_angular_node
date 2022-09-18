@@ -12,9 +12,17 @@ export const encriptarPassword = async (pwd) => {
 //Convierte un objeto tipo fecha al formato Día/Mes/Año 
 export const dateToStringDMY = (fecha, separador = '/') => {
     return [
-        numToString(fecha.getDay(), 2), 
-        numToString(fecha.getMonth(), 2), 
+        numToString(fecha.getDate(), 2), 
+        numToString(fecha.getMonth() + 1, 2), 
         numToString(fecha.getFullYear(), 4)
+    ].join(separador)
+}
+
+export const dateToStringYMD = (fecha, separador = '/') => {
+    return [
+        numToString(fecha.getFullYear(), 4),
+        numToString(fecha.getMonth() + 1, 2), 
+        numToString(fecha.getDate(), 2)
     ].join(separador)
 }
 

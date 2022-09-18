@@ -1,11 +1,9 @@
 export const rolesData = [
     {
-        nombre: "Rol test 1",
-        descripcion: "Rol de prueba para los test, N°1"
+        nombre: "Rol test 1"
     },
     {
-        nombre: "Rol test 2",
-        descripcion: "Rol de prueba para los test, N°2"
+        nombre: "Rol test 2"
     }
 ]
 

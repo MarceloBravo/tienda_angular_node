@@ -1,7 +1,7 @@
 import supertest from 'supertest'
 import app, { server } from '../src/index.js'
 import { UsuarioModel } from '../models/UsuarioModel.js'
-import { RolesModel } from '../models/RolModel.js'
+import { RolModel } from '../models/RolModel.js'
 import { rolTesting, usuarioTesting, credentials } from './helpers.js'
 
 const api = supertest(app)
@@ -10,9 +10,9 @@ describe('Test para la autenticación de usuarios', () => {
     
     beforeAll(async ()=>{
         await UsuarioModel.destroy({truncate: true, cascade: true, restartIdentity: true})
-        await RolesModel.destroy({truncate: true, cascade: true, restartIdentity: true})
+        await RolModel.destroy({truncate: true, cascade: true, restartIdentity: true})
 
-        const rol = await RolesModel.create(rolTesting)
+        const rol = await RolModel.create(rolTesting)
         rol.save()
 
         const user = await UsuarioModel.create(usuarioTesting)

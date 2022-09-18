@@ -1,7 +1,7 @@
 import supertest from "supertest";
 import app from '../src/index.js'
 import { UsuarioModel } from '../models/UsuarioModel.js'
-import { RolesModel } from '../models/RolModel.js'
+import { RolModel } from '../models/RolModel.js'
 import { rolesData, usuariosData, credentials, rolTesting, usuarioTesting } from './helpers.js'
 
 const api = supertest(app)
@@ -12,16 +12,16 @@ describe('Test para los endpoints de usuarios', ()=>{
     
     beforeAll(async ()=>{
         await UsuarioModel.destroy({truncate: true, cascade: true, restartIdentity: true})
-        await RolesModel.destroy({truncate: true, cascade: true, restartIdentity: true})
+        await RolModel.destroy({truncate: true, cascade: true, restartIdentity: true})
 
-        let rol1 = await RolesModel.create(rolesData[0])
+        let rol1 = await RolModel.create(rolesData[0])
         rol1.save()
 
-        let rol2 = await RolesModel.create(rolesData[1])
+        let rol2 = await RolModel.create(rolesData[1])
         rol2.save()
 
         //Creando el rol y el usuario para loguearse durante las pruebas de testing
-        let _rolTesing = await RolesModel.create(rolTesting)
+        let _rolTesing = await RolModel.create(rolTesting)
         _rolTesing.save()
 
         const _usuarioTesting = await UsuarioModel.create(usuarioTesting)
@@ -132,32 +132,32 @@ describe('Test para los endpoints de usuarios', ()=>{
         .auth(token, {type: 'bearer'})
 
         expect(res.status).toEqual(200)
-        expect(res.body.mensaje).toEqual('El Usuario ha sido eliminado.')
+        expect(res.body.mensaje).toEqual('El usuario ha sido eliminado exitosamente.')
 
         const res2 = await api        
         .delete('/usuarios/3')
         .auth(token, {type: 'bearer'})
 
         expect(res2.status).toEqual(200)
-        expect(res2.body.mensaje).toEqual('El usuario no fue encontrado o no existe.')
+        expect(res2.body.mensaje).toEqual('Imposible eliminar: el usuario no fue encontrado o el registro es inexistente.')
 
     })
 
 
     it('Marca un registro como borrado "DELETE /usuarios/softDelete/:id"', async ()=>{
         const res = await api        
-        .delete('/usuarios/softDelete/2')
+        .delete('/usuarios/softdelete/2')
         .auth(token, {type: 'bearer'})
 
         expect(res.status).toEqual(200)
         expect(res.body.mensaje).toEqual('El usuario ha sido borrado exitosamente.')
 
         const res2 = await api        
-        .delete('/usuarios/softDelete/2')
+        .delete('/usuarios/softdelete/2')
         .auth(token, {type: 'bearer'})
         
         expect(res2.status).toEqual(404)
-        expect(res2.body.mensaje).toEqual('Imposible eliminar. El usuario no fue encontrado o no existe.')
+        expect(res2.body.mensaje).toEqual('Imposible borrar el usuario: El usuario no fue encontrado o el registro es inextistente.')
 
     })
 

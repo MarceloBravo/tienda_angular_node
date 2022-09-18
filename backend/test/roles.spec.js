@@ -1,7 +1,7 @@
 import supertest from 'supertest'
 import app from '../src/index.js'
 import { server } from '../src/index.js'
-import { RolesModel } from '../models/RolModel.js'
+import { RolModel } from '../models/RolModel.js'
 import { UsuarioModel } from '../models/UsuarioModel.js'
 import { rolesData, credentials, usuarioTesting, rolTesting } from './helpers.js'
 
@@ -12,10 +12,10 @@ describe('Test para los endpoints de roles',  () => {
 
     beforeAll(async () => {
         await UsuarioModel.destroy({truncate: true, cascade: true, restartIdentity: true})
-        await RolesModel.destroy({truncate: true, cascade: true, restartIdentity: true})
+        await RolModel.destroy({truncate: true, cascade: true, restartIdentity: true})
         
         //Creando el rol y el usuario para loguearse durante las pruebas de testing
-        const _rolTesting = await RolesModel.create(rolTesting)
+        const _rolTesting = await RolModel.create(rolTesting)
         _rolTesting.save()
 
         const _usuarioTesting = await UsuarioModel.create(usuarioTesting)
@@ -29,20 +29,19 @@ describe('Test para los endpoints de roles',  () => {
 
 
     beforeEach(async ()=>{
-        await RolesModel.destroy({ truncate : true, cascade: true, restartIdentity: true })
+        await RolModel.destroy({ truncate : true, cascade: true, restartIdentity: true })
         
-        const _rol1 = await RolesModel.create(rolesData[0])        
+        const _rol1 = await RolModel.create(rolesData[0])        
         _rol1.save()
 
-        const _rol2 = await RolesModel.create(rolesData[1])
+        const _rol2 = await RolModel.create(rolesData[1])
         _rol2.save()        
     })
 
     
     it('Crea un rol "POST /roles"', async () => {
         const rol = {
-            nombre: "Admin",
-            descripcion: "Rol para el usuario administrador del sistema"
+            nombre: "Admin"
         }
         const res = await api            
             .post('/roles')
@@ -60,12 +59,11 @@ describe('Test para los endpoints de roles',  () => {
         const res1 = await api        
         .get('/roles/1')
         .auth(token, {type: 'bearer'})
+        
+        expect(res1.body.nombre).toEqual('Rol test 1')
 
-        expect(res1.body.data.nombre).toEqual('Rol test 1')
-
-        let rol = res1.body.data
+        let rol = res1.body
         rol.nombre = 'Invitado'
-        rol.descripcion = 'El rol ha sido actualizado a invitado'
         
         const res2 = await api                
                 .put('/roles/1')
@@ -90,20 +88,20 @@ describe('Test para los endpoints de roles',  () => {
     })
 
 
-    it('Retorna el rol con el id especificado "GET /roles:id"', async ()=> {
+    it('Retorna el rol con el id especificado "GET /roles/:id"', async ()=> {
         const res = await api        
         .get('/roles/1')
         .auth(token, {type: 'bearer'})
 
         expect(res.status).toEqual(200);
         expect(res.type).toEqual(expect.stringContaining('json'));
-        expect(res.body.data.nombre).toEqual('Rol test 1')
+        expect(res.body.nombre).toEqual('Rol test 1')
     })
 
     
     it('Filtra un registro a partir de un texto buscado "GET /roles/filtrar/:texto/:pag"', async ()=>{
         const res = await api        
-        .get('/roles/filtrar/N°1/1')
+        .get('/roles/filtrar/test 2/1')
         .auth(token, {type: 'bearer'})
 
         expect(res.status).toEqual(200)
@@ -118,14 +116,14 @@ describe('Test para los endpoints de roles',  () => {
         .auth(token, {type: 'bearer'})
 
         expect(res.status).toEqual(200)
-        expect(res.body.length).toEqual(rolesData.length)
-        expect(res.body[1].descripcion).toContain('N°2')
+        expect(res.body.rows.length).toEqual(rolesData.length)
+        expect(res.body.rows[1].nombre).toContain('test 2')
         
         //expect(res.body.)
     })
 
 
-    it('Elimina un registro de la tabla de roles "DELETE /roles/:id"', async ()=>{
+    it('Elimina un registro de la tabla de roles "DELETE /roles/softdelete/:id"', async ()=>{
         const res = await api        
         .delete('/roles/1')
         .auth(token, {type: 'bearer'})
@@ -138,7 +136,7 @@ describe('Test para los endpoints de roles',  () => {
         .auth(token, {type: 'bearer'})
 
         expect(res2.status).toEqual(200)
-        expect(res2.body.mensaje).toEqual('El rol no fue encontrado o no existe.')
+        expect(res2.body.mensaje).toEqual('Imposible eliminar el registro: el rol no existe o no fue encontrado.')
     })
 
 
@@ -155,7 +153,7 @@ describe('Test para los endpoints de roles',  () => {
         .auth(token, {type: 'bearer'})
 
         expect(res2.status).toEqual(404)
-        expect(res2.body.mensaje).toEqual('Imposible eliminar. Registro no existe o no fue encontrado.')
+        expect(res2.body.mensaje).toEqual('Imposible borrar el registro: el rol no existe o no fue encontrado.')
     })
 
     

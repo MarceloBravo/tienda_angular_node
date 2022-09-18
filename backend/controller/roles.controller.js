@@ -1,5 +1,5 @@
 import { RolModel } from "../models/RolModel.js"
-import { dateToStringDMY } from '../shared/functions.js'
+import { dateToStringYMD } from '../shared/functions.js'
 import Sequelize from "sequelize";
 import { sequelize } from '../db/database.js';
 import { regPerPage } from '../shared/constants.js'
@@ -74,7 +74,7 @@ export const getRolesId = async (req,res) => {
         const { id } = req.params;
         const data = await RolModel.findByPk(id);
         
-        res.json((data && data.deletedAt === null) ? data: null);
+        res.json((data && data.deletedAt === null) ? data : null);
     }catch(e){
         res.status(500).json({error: 'Ocurrió un error al buscar el rol: ' + e.message});
     }
@@ -98,13 +98,12 @@ export const putRoles = async (req, res) => {
         const { nombre } = req.body;
         const [ rol, created ] = await RolModel.findOrCreate({where: {id}});
         rol.nombre = nombre;
-        rol.updatedAt = dateToStringDMY(new Date());
+        rol.updatedAt = dateToStringYMD(new Date());
         rol.deletedAt = null;
         await rol.save();
 
         res.json({mensaje: `El rol ha sido ${created ? 'creado' : 'actualizado'} exitosamente.`, data: rol});
     }catch(e){
-        console.log(e);
         res.status(500).json({mensaje: 'Ocurrió un error al actualizar el rol: ' + e.message, data: e});
     }
 }
@@ -114,7 +113,7 @@ export const deleteRoles = async (req,res) => {
         const { id } = req.params;
         const result = await RolModel.destroy({where: {id}});
         
-        res.json({mensaje: result ? 'El rol ha sido eliminado exitosamente.' : 'Imposible eliminar el registro: el rol no existe o no fue encontrado', id})
+        res.json({mensaje: result ? 'El rol ha sido eliminado exitosamente.' : 'Imposible eliminar el registro: el rol no existe o no fue encontrado.', id})
     }catch(e){
         res.status(500).json({mensaje: 'Ocurrió un error al intentar eliminar el rol: ' + e.message, data: e});
     }
@@ -125,13 +124,14 @@ export const softDeleteRoles = async (req,res) => {
         const { id } = req.params;
         const rol = await RolModel.findByPk(id);
         if(!rol || rol.deletedAt !== null){
-            res.json({mensaje: 'Imposible borrar el registro: el rol no existe o no fue encontrado.', data:id});
+            res.status(404).json({mensaje: 'Imposible borrar el registro: el rol no existe o no fue encontrado.', data:id});
+        }else{
+
+            rol.deletedAt = dateToStringYMD(new Date());
+            await rol.save();
+
+            res.json({mensaje: 'El rol ha sido borrado exitosamente.', data:id});
         }
-
-        rol.deletedAt = dateToStringDMY(new Date());
-        await rol.save();
-
-        res.json({mensaje: 'El rol ha sido borrado exitosamente.', data:id});
     }catch(e){
         res.status(500).json({mensaje: 'Ocurrió un error al intentar borrar el resgistro: ' + e.message, data: e});
     }

@@ -1,5 +1,5 @@
 import { UsuarioModel } from "../models/UsuarioModel.js"
-import { dateToStringDMY } from '../shared/functions.js'
+import { dateToStringYMD } from '../shared/functions.js'
 import Sequelize from "sequelize";
 import { sequelize } from '../db/database.js';
 import { regPerPage } from '../shared/constants.js'
@@ -150,7 +150,7 @@ export const deleteUsuarios = async (req, res) => {
         const result = await UsuarioModel.destroy({where: {id: id}});
         console.log(result ? 'OK': 'ERROR');
 
-        res.json({mensaje: result ? 'El usuario ha sido eliminado exitosamente.' : 'Imposible eliminar: el usuario no fue encontrado o el registro es inexistente.', id});
+        res.json({mensaje: result ? 'El usuario ha sido eliminado exitosamente.' : 'Imposible eliminar: el usuario no fue encontrado o el registro es inexistente.', data: id});
     }catch(e){
         res.status(500).json({mensaje: 'Ocurrió un error al intentar eliminar el usuario: ' + e.message, data: e});
     }
@@ -162,15 +162,15 @@ export const softDeleteUsuarios = async (req, res) => {
         const { id } = req.params;
         const usuario = await UsuarioModel.findByPk(id);
         if(usuario && usuario.deletedAt === null){
-            usuario.deletedAt = dateToStringDMY(new Date());
+            usuario.deletedAt = dateToStringYMD(new Date());
             await usuario.save();
-            res.json({mensaje: 'El usuario ha sido borrado exitosamente.', id});
+            res.json({mensaje: 'El usuario ha sido borrado exitosamente.', data: id});
         }else{
-            res.json({mensaje: 'Imposible borrar el usuario: El usuario no fue encontrado o el registro es inextistente.', id});
+            res.status(404).json({mensaje: 'Imposible borrar el usuario: El usuario no fue encontrado o el registro es inextistente.', data: id});
         }
         
     }catch(e){
-        res.status(500).json({mensaje: 'Ocurrió un error al intentar borrar el usuario: ' + e.message,  id});
+        res.status(500).json({mensaje: 'Ocurrió un error al intentar borrar el usuario: ' + e.message,  data: e});
     }
 }
 
