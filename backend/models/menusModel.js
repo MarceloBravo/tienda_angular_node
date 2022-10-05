@@ -23,4 +23,6 @@ export const MenusModel = sequelize.define('menus', {
         type: DataTypes.DATE,
         allowNull: true
     }
+},{ 
+    timestamps: true
 });

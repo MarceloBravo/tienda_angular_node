@@ -92,7 +92,7 @@ export const getUsuariosId = async (req,res) => {
 
         res.json((data && data.deletedAt === null) ? data : null);
     }catch(e){
-        res.status(500).json({error: 'Ocurrió un error al efectuar la busqueda del usuario: ' + e.message});
+        res.status(500).json({error: 'Ocurrió un error al efectuar la busqueda del usuario: ' + e.message, data: null});
     }
 }
 

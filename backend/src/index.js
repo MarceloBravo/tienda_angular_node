@@ -6,10 +6,11 @@ import { fileURLToPath } from 'url';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';  //Necesario para atender las peticiones post
 
-import rolesRoutes from '../routes/roles.routes.js'
-import usuariosRoutes from '../routes/usuarios.routes.js'
-import loginRoutes from '../routes/login.routes.js'
-import { sequelize } from '../db/database.js'
+import rolesRoutes from '../routes/roles.routes.js';
+import usuariosRoutes from '../routes/usuarios.routes.js';
+import loginRoutes from '../routes/login.routes.js';
+import menusRoutes from '../routes/menus.routes.js';
+import { sequelize } from '../db/database.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,10 +33,12 @@ app.use(bodyParser.json()); //Permite recibir y entender los datos recibidos com
 
 app.use(rolesRoutes);
 app.use(usuariosRoutes);
-app.use(loginRoutes)
+app.use(loginRoutes);
+app.use(menusRoutes);
 
 import '../models/RolModel.js';
 import '../models/UsuarioModel.js';
+import '../models/menusModel.js';
 
 //let server = null
 async function main(){

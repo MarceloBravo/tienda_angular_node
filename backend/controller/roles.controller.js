@@ -57,13 +57,12 @@ export const getRolesFilter = async (req,res) => {
 
 export const getRolesAll = async (req, res) => {
     try{
-        console.log(res);
         const { rows, count } = await RolModel.findAndCountAll({
             where: {deletedAt: null},
             order: [['nombre','ASC']]
         });
 
-        res.json({rows, count, rowsPerPage});
+        res.json({rows, count});
     }catch(e){
         res.status(500).json({error: 'Ocurrió un error al obtener el listados de los roles: ' + e.message})
     }
@@ -76,7 +75,7 @@ export const getRolesId = async (req,res) => {
         
         res.json((data && data.deletedAt === null) ? data : null);
     }catch(e){
-        res.status(500).json({error: 'Ocurrió un error al buscar el rol: ' + e.message});
+        res.status(500).json({error: 'Ocurrió un error al buscar el rol: ' + e.message, data: null});
     }
 }
 
@@ -97,12 +96,13 @@ export const putRoles = async (req, res) => {
         const { id } = req.params;
         const { nombre } = req.body;
         const [ rol, created ] = await RolModel.findOrCreate({where: {id}});
+        let isNuevo = rol.deletedAt === null ? created: true;
         rol.nombre = nombre;
         rol.updatedAt = dateToStringYMD(new Date());
         rol.deletedAt = null;
         await rol.save();
 
-        res.json({mensaje: `El rol ha sido ${created ? 'creado' : 'actualizado'} exitosamente.`, data: rol});
+        res.json({mensaje: `El rol ha sido ${isNuevo ? 'creado' : 'actualizado'} exitosamente.`, data: rol});
     }catch(e){
         res.status(500).json({mensaje: 'Ocurrió un error al actualizar el rol: ' + e.message, data: e});
     }
