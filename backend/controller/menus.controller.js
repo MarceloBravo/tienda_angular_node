@@ -1,4 +1,4 @@
-import { MenusModel } from "../models/menusModel.js"
+import { MenuModel } from "../models/MenuModel.js"
 import { dateToStringYMD } from '../shared/functions.js'
 import Sequelize, { json } from "sequelize";
 import { sequelize } from '../db/database.js';
@@ -10,7 +10,7 @@ export const getMenus = async (req, res) => {
     try{
         const { pag } =  req.params;
         const desde = rowsPerPage * (pag - 1);
-        const { count, rows } = await MenusModel.findAndCountAll({
+        const { count, rows } = await MenuModel.findAndCountAll({
             where: {deletedAt: null},
             offset: desde,
             limit: rowsPerPage, 
@@ -27,7 +27,7 @@ export const getMenusFilter = async (req, res) => {
     try{
         const { pag, texto } = req.params;
         const desde = rowsPerPage * (pag - 1);
-        const { count, rows } = await MenusModel.findAndCountAll({
+        const { count, rows } = await MenuModel.findAndCountAll({
             where: { 
                 [Op.and]: 
                     {deletedAt: null},
@@ -50,7 +50,7 @@ export const getMenusFilter = async (req, res) => {
 
 export const getMenusAll = async (req, res) => {
     try{
-        const { count, rows } = await MenusModel.findAndCountAll({
+        const { count, rows } = await MenuModel.findAndCountAll({
             where: {deletedAt: null},
             order: [['nombre','ASC']]
         });
@@ -64,7 +64,7 @@ export const getMenusAll = async (req, res) => {
 export const getMenusId = async (req, res) => {
     try{
         const { id } = req.params;
-        const data = await MenusModel.findByPk(id);
+        const data = await MenuModel.findByPk(id);
 
         res.json((data && data.deletedAt === null) ? data : null);
     }catch(e){
@@ -75,7 +75,7 @@ export const getMenusId = async (req, res) => {
 export const postMenus = async (req, res) => {
     try{
         const { nombre, menuPadreId } = req.body;
-        const data = await MenusModel.create({nombre, menuPadreId});
+        const data = await MenuModel.create({nombre, menuPadreId});
 
         res.json({mensaje: 'El registro ha sido creado exitosamente.', data});
     }catch(e){
@@ -87,10 +87,10 @@ export const putMenus = async (req, res) => {
     try{
         const { id } = req.params;
         const { nombre, menuPadreId } = req.body;
-        const [ menu, created ] = await MenusModel.findOrCreate({ where: {id}});
-        console.log('createdAt = ',menu.createdAt, 'CREATED = ', created )
+        const [ menu, created ] = await MenuModel.findOrCreate({ where: {id}});
+        //console.log('createdAt = ',menu.createdAt, 'CREATED = ', created )
         let isNuevo = menu.deletedAt === null ? created: true;
-        console.log('isNuevo = ', isNuevo);
+        //console.log('isNuevo = ', isNuevo);
         menu.nombre = nombre;
         menu.menuPadreId = menuPadreId;
         menu.updatedAt = dateToStringYMD(new Date());
@@ -106,9 +106,9 @@ export const putMenus = async (req, res) => {
 export const deleteMenus = async (req, res) => {
     try{
         const { id } = req.params;
-        const result = await MenusModel.destroy({where: {id}});
+        const result = await MenuModel.destroy({where: {id}});
 
-        res.json({mensaje: result ? 'El registro ha sido eliminadio exitosamente.' : 'Imposible eliminar el resgitro: el menú no existe o no fue encontrado.', id});
+        res.json({mensaje: result ? 'El registro ha sido eliminado exitosamente.' : 'Imposible eliminar el resgitro: el menú no existe o no fue encontrado.', data: id});
     }catch(e){
         res.status(500).json({error: 'Ocurrio un error al intentar eliminar el registro: '+e.message, data: e});
     }
@@ -117,14 +117,14 @@ export const deleteMenus = async (req, res) => {
 export const softDeleteMenus = async (req, res) => {
     try{
         const { id } = req.params;
-        const menu = await MenusModel.findByPk(id);
+        const menu = await MenuModel.findByPk(id);
         if(menu === null){
-            res.status(404).json({mensaje: 'Imposible borrar el registro: el menú no fue encontrado o no existe.', id});
+            res.status(404).json({mensaje: 'Imposible borrar el registro: el menú no fue encontrado o no existe.', data: id});
         }else{
             menu.deletedAt = dateToStringYMD(new Date());
             await menu.save();
 
-            res.json({mensaje: 'El registro ha sido borrado exitosamente.', id});
+            res.json({mensaje: 'El registro ha sido borrado exitosamente.', data: id});
         }
     
     }catch(e){

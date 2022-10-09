@@ -1,14 +1,11 @@
-import { DataTypes, useInflection } from 'sequelize'
+import { DataTypes } from 'sequelize'
 import { sequelize } from '../db/database.js'
-import { RolModel } from './RolModel.js';
-import { encriptarPassword } from '../shared/functions.js'
 
-
-export const MenusModel = sequelize.define('menus', {
-    id:{
+export const MenuModel = sequelize.define('menus', {
+    id: {
         type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
+        primaryKey: true
     },
     nombre: {
         type: DataTypes.STRING(50),
@@ -24,5 +21,5 @@ export const MenusModel = sequelize.define('menus', {
         allowNull: true
     }
 },{ 
-    timestamps: true
+    tymestamps: true
 });

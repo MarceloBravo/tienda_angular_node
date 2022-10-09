@@ -48,12 +48,31 @@ export const usuarioTesting =
         email: "marcelo@ejemplo.cl",
         password: "1234567",
         fono: "+5690193847566"
-    }
-
+}
 
 export const credentials = {
     "email": usuarioTesting.email,
     "password": usuarioTesting.password,
     "remember": false,  //No genera token de refresco para extender la sessión "refresh_token"
     "host": "127.0.0.1"
+}
+
+export const menusData = [
+    {
+        nombre: 'Main',
+        menuPadreId: null
+    },
+    {
+        nombre: 'Sistema',
+        menuPadreId: null
+    },
+    {
+        nombre: 'Menus',
+        menuPadreId: 1
+    }
+]
+
+export const menuTesting = {
+    nombre: 'Usuarios',
+    menuPadreId: 1
 }

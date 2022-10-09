@@ -1,7 +1,5 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../db/database.js';
-//import { UsuarioModel } from './usuarioModel.js';
-import { encriptarPassword } from '../shared/functions.js';
 
 export const RolModel = sequelize.define('roles', {
     id: {

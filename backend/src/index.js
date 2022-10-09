@@ -38,12 +38,12 @@ app.use(menusRoutes);
 
 import '../models/RolModel.js';
 import '../models/UsuarioModel.js';
-import '../models/menusModel.js';
+import '../models/MenuModel.js';
 
 //let server = null
 async function main(){
     try{
-        //await sequelize.sync({alter: true});
+        await sequelize.sync({alter: true});
         console.log('Conexión establecida con la base de datos...');
         //app.listen(app.get('port'), '0.0.0.0',() => { //heroku
         if (process.env.NODE_ENV !== 'test') {  //En modo de prueba no se necesita estar escuchando a un puerto de red
