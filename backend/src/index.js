@@ -12,6 +12,7 @@ import loginRoutes from '../routes/login.routes.js';
 import menusRoutes from '../routes/menus.routes.js';
 import { sequelize } from '../db/database.js';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const app = express();
@@ -20,11 +21,11 @@ export let server = null;
 export default app;
 
 app.use(cors());
-app.use(express.static(path.join(__dirname,'/public'))); 
+app.use(express.static(path.join(__dirname,'../public'))); 
 
 //const { resolve } = require('path');
 
-app.set('host', '192.168.1.125');
+app.set('host', '192.168.1.151');
 app.set('port', process.env.PORT || 3001);
 
 //middlewares

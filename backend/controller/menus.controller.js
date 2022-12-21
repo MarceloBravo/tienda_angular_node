@@ -6,6 +6,58 @@ import { regPerPage } from '../shared/constants.js'
 const Op = Sequelize.Op;
 const rowsPerPage = regPerPage;
 
+export const getChildrenMenus = async (req, res) => {
+    try{
+        const { menuPadreId } = req.params;
+        const { count, rows } = await MenuModel.findAndCountAll({
+            where: {
+                [Op.and]:
+                    {deletedAt: null},
+                [Op.or]: [
+                    {menuPadreId: menuPadreId.toLowerCase() === 'null' ? null : parseInt(menuPadreId)}
+                ],
+            },
+            order: [['posicion','ASC']]
+        });
+        
+        let menu = JSON.parse(JSON.stringify(rows));
+        for(const mnu of menu){
+            console.log('primer for');
+            let e = await getSubMenu(mnu.id);
+            mnu.submenu = JSON.parse(JSON.stringify(e));
+            console.log('Menu = ',menu)
+        };
+        
+        console.log('Menu Final = ', menu);
+
+        res.json({rows: menu, count});
+    }catch(e){
+        res.status(500).json({error: 'Ocurrió un error al intentar obtener los menús: '+e.message, rows: [], count: 0});
+    }
+}
+
+
+const getSubMenu = async (menuPadreId) => {
+    const { count, rows } = await MenuModel.findAndCountAll({
+        where: {
+            [Op.and]:
+                {deletedAt: null},
+            [Op.or]: [
+                {menuPadreId: menuPadreId}
+            ],
+        },
+        order: [['posicion','ASC']]
+    });
+
+    let objMenus = JSON.parse(JSON.stringify(rows));
+    for(const mnu of objMenus){
+        console.log('segundo for');
+        objMenus.submenu = JSON.parse(JSON.stringify(await getSubMenu(mnu.id)));
+    };
+    return objMenus;
+} 
+
+
 export const getMenus = async (req, res) => {
     try{
         const { pag } =  req.params;
@@ -86,15 +138,18 @@ export const postMenus = async (req, res) => {
 export const putMenus = async (req, res) => {
     try{
         const { id } = req.params;
-        const { nombre, menuPadreId } = req.body;
+        const { nombre, menuPadreId, icono, posicion, link } = req.body;
         const [ menu, created ] = await MenuModel.findOrCreate({ where: {id}});
-        //console.log('createdAt = ',menu.createdAt, 'CREATED = ', created )
+
         let isNuevo = menu.deletedAt === null ? created: true;
-        //console.log('isNuevo = ', isNuevo);
         menu.nombre = nombre;
         menu.menuPadreId = menuPadreId;
+        menu.posicion = posicion;
+        menu.icono = icono;
+        menu.link = link;
         menu.updatedAt = dateToStringYMD(new Date());
         menu.deletedAt = null;
+
         await menu.save();
 
         res.json({mensaje: `El menú ha sido ${isNuevo ? 'creado' : 'actualizado'} exitosamente.`, data: menu});

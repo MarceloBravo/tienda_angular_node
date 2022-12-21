@@ -2,7 +2,7 @@
     "development": {
       "username": "root",
       "password": "mabc",
-      "port": 5433,
+      "port": 5432,
       "database": "tienda_angular_node",
       "host": "127.0.0.1",
       "dialect": "postgres"
@@ -10,16 +10,16 @@
     "test": {
       "username": "postgres",
       "password": "mabc",
-      "port": 5433,
+      "port": 5432,
       "database": "tienda_angular_node_test",
       "host": "127.0.0.1",
       "dialect": "postgres"
     },
     "production": {
       "username": "root",
-      "password": "null",
-      "port": 5433,
-      "database": "database_production",
+      "password": "mabc",
+      "port": 5432,
+      "database": "tienda_angular_node",
       "host": "127.0.0.1",
       "dialect": "mysql"
     }

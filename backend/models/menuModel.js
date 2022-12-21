@@ -12,9 +12,21 @@ export const MenuModel = sequelize.define('menus', {
         allowNull: false,
         unique: true
     },
+    icono: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
     menuPadreId: {
         type: DataTypes.INTEGER,
         allowNull: true        
+    },
+    link: {
+        type: DataTypes.TEXT,
+        allowNull: true
+    },
+    posicion: {
+        type: DataTypes.INTEGER,
+        allowNull: true
     },
     deletedAt: {
         type: DataTypes.DATE,

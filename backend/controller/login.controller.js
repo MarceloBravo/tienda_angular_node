@@ -13,7 +13,7 @@ export const login = async (req, res) => {
     try{
         const { email, password, host } = req.body;
         const user = await UsuarioModel.findOne({where: {email}});
-        if(res){
+        if(user){
 
             const rol = await RolModel.findByPk(user.rolId);    
             bcrypt.compare(password.toString(), user.password.toString(), async (err, result)=>{

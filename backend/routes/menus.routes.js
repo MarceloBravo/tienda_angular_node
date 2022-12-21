@@ -1,9 +1,10 @@
 import { Router} from 'express';
-import { getMenus, getMenusId, getMenusFilter, getMenusAll, postMenus, putMenus, deleteMenus, softDeleteMenus } from '../controller/menus.controller.js';
+import { getMenus, getMenusId, getMenusFilter, getMenusAll, postMenus, putMenus, deleteMenus, softDeleteMenus, getChildrenMenus } from '../controller/menus.controller.js';
 import { checkToken } from '../shared/mw_token.js';
 
 const router = Router();
 
+router.get('/menus/parent/:menuPadreId',checkToken, getChildrenMenus);
 router.get('/menus/pag/:pag',checkToken, getMenus);
 router.get('/menus/:id', checkToken, getMenusId);
 router.get('/menus/filtrar/:texto/:pag', checkToken, getMenusFilter);
