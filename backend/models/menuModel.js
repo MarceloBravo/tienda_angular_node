@@ -35,3 +35,15 @@ export const MenuModel = sequelize.define('menus', {
 },{ 
     tymestamps: true
 });
+
+MenuModel.hasMany(MenuModel, {
+    as: 'subMenus',
+    foreignKey: 'menuPadreId',
+    required: false
+});
+
+MenuModel.belongsTo(MenuModel, {
+    as: 'menuPadre',
+    foreignKey: 'menuPadreId',
+    required: false
+});

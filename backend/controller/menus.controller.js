@@ -2,7 +2,7 @@ import { MenuModel } from "../models/MenuModel.js"
 import { dateToStringYMD } from '../shared/functions.js'
 import Sequelize, { json } from "sequelize";
 import { sequelize } from '../db/database.js';
-import { regPerPage } from '../shared/constants.js'
+import { regPerPage, slashReplace } from '../shared/constants.js'
 const Op = Sequelize.Op;
 const rowsPerPage = regPerPage;
 
@@ -10,6 +10,13 @@ export const getChildrenMenus = async (req, res) => {
     try{
         const { menuPadreId } = req.params;
         const { count, rows } = await MenuModel.findAndCountAll({
+            /*
+            include: [{
+                model: MenuModel, 
+                attributes: ['id','nombre', 'posicion', 'link','icono','createdAt', 'updatedAt','deletedAt'],
+                as: 'subMenus'
+            }],
+            */
             where: {
                 [Op.and]:
                     {deletedAt: null},
@@ -28,7 +35,7 @@ export const getChildrenMenus = async (req, res) => {
             console.log('Menu = ',menu)
         };
         
-        console.log('Menu Final = ', menu);
+        //console.log('Menu Final = ', menu);
 
         res.json({rows: menu, count});
     }catch(e){
@@ -63,10 +70,15 @@ export const getMenus = async (req, res) => {
         const { pag } =  req.params;
         const desde = rowsPerPage * (pag - 1);
         const { count, rows } = await MenuModel.findAndCountAll({
+            include: [{
+                model: MenuModel, 
+                attributes: ['id','nombre', 'posicion', 'createdAt', 'updatedAt'],
+                as: 'menuPadre'
+            }],
             where: {deletedAt: null},
             offset: desde,
             limit: rowsPerPage, 
-            order: [['nombre', 'ASC']]
+            order: [['menuPadreId', 'ASC'],['nombre', 'ASC']]
         });
 
         res.json({rows, count, rowsPerPage, pag});
@@ -78,15 +90,18 @@ export const getMenus = async (req, res) => {
 export const getMenusFilter = async (req, res) => {
     try{
         const { pag, texto } = req.params;
+        const textoBuscado = texto.split(slashReplace).join('-');
         const desde = rowsPerPage * (pag - 1);
         const { count, rows } = await MenuModel.findAndCountAll({
             where: { 
                 [Op.and]: 
                     {deletedAt: null},
                     [Op.or]: [
-                        sequelize.where(sequelize.fn('lower', sequelize.col('nombre')), 'like',`%${texto.toLowerCase()}%`),
-                        sequelize.where(sequelize.fn('to_char', sequelize.col('createdAt'), 'dd-mm-yyy'), 'like',`%${texto.toLowerCase()}%`),
-                        sequelize.where(sequelize.fn('to_char', sequelize.col('updatedAt'), 'dd-mm-yyy'), 'like',`%${texto.toLowerCase()}%`)
+                        sequelize.where(sequelize.fn('lower', sequelize.col('nombre')), 'like',`%${textoBuscado.toLowerCase()}%`),
+                        sequelize.where(sequelize.fn('lower', sequelize.col('link')), 'like',`%${textoBuscado.toLowerCase()}%`),
+                        sequelize.where(sequelize.fn('text', sequelize.col('posicion')), 'like',`%${textoBuscado}%`),
+                        sequelize.where(sequelize.fn('to_char', sequelize.col('createdAt'), 'dd-mm-yyyy'), 'like',`%${textoBuscado.toLowerCase()}%`),
+                        sequelize.where(sequelize.fn('to_char', sequelize.col('updatedAt'), 'dd-mm-yyyy'), 'like',`%${textoBuscado.toLowerCase()}%`)
                     ]
             },
             offset: desde,
