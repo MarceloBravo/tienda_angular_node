@@ -1,6 +1,6 @@
 {
     "development": {
-      "username": "root",
+      "username": "postgres",
       "password": "mabc",
       "port": 5432,
       "database": "tienda_angular_node",
@@ -16,7 +16,7 @@
       "dialect": "postgres"
     },
     "production": {
-      "username": "root",
+      "username": "postgres",
       "password": "mabc",
       "port": 5432,
       "database": "tienda_angular_node",

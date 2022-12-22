@@ -4,12 +4,12 @@ module.exports = {
   up: (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert('roles', [{
         id: 1,
-        nombres: 'Administrador',
+        nombre: 'Administrador',
         createdAt: new Date(),
         updatedAt: new Date()
       },{
         id: 2,
-        nombres: 'Invitado',
+        nombre: 'Invitado',
         createdAt: new Date(),
         updatedAt: new Date()
       }], {});

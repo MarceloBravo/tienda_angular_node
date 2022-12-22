@@ -29,13 +29,11 @@ export const getChildrenMenus = async (req, res) => {
         
         let menu = JSON.parse(JSON.stringify(rows));
         for(const mnu of menu){
-            console.log('primer for');
             let e = await getSubMenu(mnu.id);
             mnu.submenu = JSON.parse(JSON.stringify(e));
-            console.log('Menu = ',menu)
         };
         
-        //console.log('Menu Final = ', menu);
+        //console.log('Menu Final = ', JSON.stringify(menu));
 
         res.json({rows: menu, count});
     }catch(e){
@@ -58,7 +56,6 @@ const getSubMenu = async (menuPadreId) => {
 
     let objMenus = JSON.parse(JSON.stringify(rows));
     for(const mnu of objMenus){
-        console.log('segundo for');
         objMenus.submenu = JSON.parse(JSON.stringify(await getSubMenu(mnu.id)));
     };
     return objMenus;
