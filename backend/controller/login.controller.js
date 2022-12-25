@@ -52,6 +52,7 @@ export const logout = async (req, res) => {
 export const refreshToken = async (req, res) => {
     try{
         const { refreshToken, host } = req.body;
+        
         const verify = jwt.verify(refreshToken, constantes.secretRefresh);
 
         if(!verify.user.id){
@@ -72,7 +73,7 @@ export const refreshToken = async (req, res) => {
         
         res.json({access_token, refresh_token});
     }catch(e){
-        console.log('ERROR = ',e);
+        //console.log('ERROR = ',e);
         res.status(500).json({mensaje: 'Ocurrió un error al volver a autenticar al usuario: ' + e.message});
     }
     
