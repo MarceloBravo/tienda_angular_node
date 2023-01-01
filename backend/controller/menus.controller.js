@@ -64,21 +64,24 @@ const getSubMenu = async (menuPadreId) => {
 
 export const getMenus = async (req, res) => {
     try{
-        const { pag } =  req.params;
-        const desde = rowsPerPage * (pag - 1);
-        const { count, rows } = await MenuModel.findAndCountAll({
+        const { pag, rows } =  req.params;
+        const regPorPagina  = rows ? parseInt(rows) : rowsPerPage;
+        const desde = regPorPagina * (pag - 1);
+        const res1 = await MenuModel.findAndCountAll({
             include: [{
                 model: MenuModel, 
-                attributes: ['id','nombre', 'posicion', 'createdAt', 'updatedAt'],
+                attributes: ['id','nombre','posicion', 'createdAt', 'updatedAt'],
                 as: 'menuPadre'
             }],
             where: {deletedAt: null},
             offset: desde,
-            limit: rowsPerPage, 
+            limit: regPorPagina, 
             order: [['menuPadreId', 'ASC'],['nombre', 'ASC']]
         });
 
-        res.json({rows, count, rowsPerPage, pag});
+         const res2 = await MenuModel.findAndCountAll({where: {deletedAt: null}});
+         
+        res.json({data: res1.rows, totalRegistros: res2.count, regPorPagina: regPorPagina, pagina: parseInt(pag), totalPaginas: Math.ceil(res2.count / regPorPagina) });
     }catch(e){
         res.status(500).json({error: 'Ocurrió un error al intentar obtener el listado de Menús: '+e.message});
     }
@@ -86,27 +89,31 @@ export const getMenus = async (req, res) => {
 
 export const getMenusFilter = async (req, res) => {
     try{
-        const { pag, texto } = req.params;
+        const { pag, rows, texto } = req.params;
+        const regPorPagina  = rows ? parseInt(rows) : rowsPerPage;
         const textoBuscado = texto.split(slashReplace).join('-');
-        const desde = rowsPerPage * (pag - 1);
-        const { count, rows } = await MenuModel.findAndCountAll({
-            where: { 
-                [Op.and]: 
-                    {deletedAt: null},
-                    [Op.or]: [
-                        sequelize.where(sequelize.fn('lower', sequelize.col('nombre')), 'like',`%${textoBuscado.toLowerCase()}%`),
-                        sequelize.where(sequelize.fn('lower', sequelize.col('link')), 'like',`%${textoBuscado.toLowerCase()}%`),
-                        sequelize.where(sequelize.fn('text', sequelize.col('posicion')), 'like',`%${textoBuscado}%`),
-                        sequelize.where(sequelize.fn('to_char', sequelize.col('createdAt'), 'dd-mm-yyyy'), 'like',`%${textoBuscado.toLowerCase()}%`),
-                        sequelize.where(sequelize.fn('to_char', sequelize.col('updatedAt'), 'dd-mm-yyyy'), 'like',`%${textoBuscado.toLowerCase()}%`)
-                    ]
-            },
+        const desde = regPorPagina * (pag - 1);
+        const where =  {where: { 
+            [Op.and]: 
+                {deletedAt: null},
+                [Op.or]: [
+                    sequelize.where(sequelize.fn('lower', sequelize.col('nombre')), 'like',`%${textoBuscado.toLowerCase()}%`),
+                    sequelize.where(sequelize.fn('lower', sequelize.col('link')), 'like',`%${textoBuscado.toLowerCase()}%`),
+                    sequelize.where(sequelize.fn('text', sequelize.col('posicion')), 'like',`%${textoBuscado}%`),
+                    sequelize.where(sequelize.fn('to_char', sequelize.col('createdAt'), 'dd-mm-yyyy'), 'like',`%${textoBuscado.toLowerCase()}%`),
+                    sequelize.where(sequelize.fn('to_char', sequelize.col('updatedAt'), 'dd-mm-yyyy'), 'like',`%${textoBuscado.toLowerCase()}%`)
+                ]
+        }}
+        const res1 = await MenuModel.findAndCountAll({
+            where,
             offset: desde,
-            limit: rowsPerPage,
+            limit: regPorPagina,
             order: [['nombre','ASC']]
         });
 
-        res.json({rows, count, rowsPerPage, pag});
+        const res2 = await MenuModel.findAndCountAll({where});
+         
+        res.json({data: res1.rows, totalRegistros: res2.count, regPorPagina: regPorPagina, pagina: parseInt(pag), totalPaginas: Math.ceil(res2.count / regPorPagina) });
     }catch(e){
         res.status(500).json({error: 'Ocurrio un error al intentar aplicar el filtro al listado de menús: '+e.message});
     }

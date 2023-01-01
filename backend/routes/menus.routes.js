@@ -5,9 +5,9 @@ import { checkToken } from '../shared/mw_token.js';
 const router = Router();
 
 router.get('/menus/parent/:menuPadreId',checkToken, getChildrenMenus);
-router.get('/menus/pag/:pag',checkToken, getMenus);
+router.get('/menus/pag/:pag/:rows',checkToken, getMenus);
 router.get('/menus/:id', checkToken, getMenusId);
-router.get('/menus/filtrar/:texto/:pag', checkToken, getMenusFilter);
+router.get('/menus/filtrar/:texto/:pag/:rows', checkToken, getMenusFilter);
 router.get('/menus/get/all', checkToken, getMenusAll);
 router.post('/menus', checkToken, postMenus);
 router.put('/menus/:id', checkToken, putMenus);

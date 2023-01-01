@@ -62,7 +62,7 @@ describe('Test para los endPoints de Menus.', () => {
 
     it('Retorna la primera página de registros "GET/menus/pag"', async () => {
         const res = await api
-            .get('/menus/pag/1')
+            .get('/menus/pag/1/10')
             .auth(token, {type: 'bearer'})
 
         expect(res.status).toEqual(200);
@@ -93,7 +93,7 @@ describe('Test para los endPoints de Menus.', () => {
 
     it('Aplica un filtro para retornar un menú "GET/menus/filtrar"', async () => {
         const res = await api
-            .get('/menus/filtrar/stem/1')
+            .get('/menus/filtrar/stem/1/10')
             .auth(token, {type: 'bearer'})
 
         expect(res.status).toEqual(200);
@@ -142,7 +142,6 @@ describe('Test para los endPoints de Menus.', () => {
 
 
     afterAll(()=>{
-        //console.log('SERVER afterEach', server)
         if(server) server.close();
     });
     
