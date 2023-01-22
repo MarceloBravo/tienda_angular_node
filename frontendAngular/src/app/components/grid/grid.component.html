@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-md-3">
+        <button class="btn btn-primary" (click)="nuevoClickHandler()">Nuevo</button>
+    </div>
+    <div class="col-md-6">
+        <input #txtBusqueda type="text" class="form-control col-md-12" placeholder="Ingresa el texto a buscar y presiona Enter" (blur)="buscarChangeHandler(txtBusqueda.value)" (keyup.enter)="buscarChangeHandler(txtBusqueda.value)"/>
+    </div>
+    <div class="col-md-3">
+        <div class="class row">
+            <label class="label-form col-md-7">Registros por página:</label>
+            <div class="col-md-5">
+                <select class="form-control col-md-12" (change)="changeRowsVisibles($event.target)">
+                    <option *ngFor="let item of filasPorPaginaOptions" [value]="item" [selected]="filasPorPagina === item">{{ item }}</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th *ngFor="let colName of getHeaders(data.headers, data.showColumnsName, data.rows)">{{ colName }}</th>
+            <th class="col-accion">Acción</th>
+        </tr>
+    </thead>
+    <tbody>
+        
+            <tr *ngFor="let row of data.rows; index as r">
+                <ng-container *ngFor="let col of data.showColumnsName; index as c">
+                    <td *ngIf="isShowColumn(data.showColumnsName, col, 'text')" [class]="data.colWidth[c] ? data.colWidth[c] : ''">
+                        {{ valueToText(col, row) }}
+                    </td>
+
+                    <td *ngIf="isShowColumn(data.showColumnsName, col, 'image')" [class]="data.colWidth[c] ? data.colWidth[c] : ''">
+                        <img *ngIf="row[col] !== null" class="image-field" [src]="this.srcImages + row[col]" [alt]="row[col]"/>
+                    </td>
+
+                    <td *ngIf="isShowColumn(data.showColumnsName, col, 'boolean')" [class]="data.colWidth[c] ? data.colWidth[c] : ''">
+                        <input type="checkbox" [checked]="row[col]" class="">
+                    </td>
+                    
+                    <td *ngIf="isShowColumn(data.showColumnsName, col, 'date')" [class]="data.colWidth[c] ? data.colWidth[c] : ''">
+                        <input type="date" [value]="fechaInputDate(row[col]) | date:'yyyy-MM-dd'" class="">
+                    </td>
+                </ng-container>
+                
+                <!--
+                <td>
+                    <img *ngIf="row['icono'] && row['icono'] !== 'null'" class="image-field" [src]="srcImages + row['icono']" [alt]="row['icono']"/>
+                </td>
+                
+                <td class="d-none d-md-table-cell">{{ row['link'] }}</td>
+                -->
+                <td class="col-accion">
+                    <img src="../../../../../assets/img/icons/icons-pencil-50.png" class="icon-button" (click)="editarClickHandler(row['id'])">
+                    <img src="../../../../../assets/img/icons/icons-trash-can-50.png" class="icon-button" (click)="eliminarClickHandler(row['id'])">
+                </td>
+            </tr>
+    </tbody>
+</table>

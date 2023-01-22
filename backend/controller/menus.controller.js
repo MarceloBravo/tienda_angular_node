@@ -3,6 +3,7 @@ import { dateToStringYMD } from '../shared/functions.js'
 import Sequelize, { json } from "sequelize";
 import { sequelize } from '../db/database.js';
 import { regPerPage, slashReplace } from '../shared/constants.js'
+//import { uploadFiles } from '../shared/mw_uploadFiles.js';
 const Op = Sequelize.Op;
 const rowsPerPage = regPerPage;
 
@@ -143,35 +144,54 @@ export const getMenusId = async (req, res) => {
     }
 }
 
-export const postMenus = async (req, res) => {
+export const createMenu = async (req, res) => {
     try{
-        const { nombre, menuPadreId } = req.body;
-        const data = await MenuModel.create({nombre, menuPadreId});
+        let data = req.body;
+        Object.keys(data).forEach(e => data[e] = data[e] === 'null' ? null : data[e]);
+        const error = await validaDatos(null, data);
+        if(error.length > 0){
+            throw error
+        }else{
+            let { nombre, menuPadreId, link, posicion, icono } = data;
+            menuPadreId = menuPadreId === 'null' ? null : menuPadreId;
+            const record = await MenuModel.create({nombre, menuPadreId, link, posicion, icono});
 
-        res.json({mensaje: 'El registro ha sido creado exitosamente.', data});
+            res.json({mensaje: 'El registro ha sido creado exitosamente.', record});
+        }
     }catch(e){
+        console.log(e);
         res.status(500).json({error: 'Ocurrio un error al intentar crear el menú: '+e.message, data: e});
     }
 }
 
-export const putMenus = async (req, res) => {
+export const updateMenu = async (req, res) => {
     try{
         const { id } = req.params;
-        const { nombre, menuPadreId, icono, posicion, link } = req.body;
-        const [ menu, created ] = await MenuModel.findOrCreate({ where: {id}});
+        let data = req.body;
+        Object.keys(data).forEach(e => data[e] = data[e] === 'null' ? null : data[e]);
+        const error = await validaDatos(null, data);
+        if(error.length > 0){
+            throw error
+        }else{
 
-        let isNuevo = menu.deletedAt === null ? created: true;
-        menu.nombre = nombre;
-        menu.menuPadreId = menuPadreId;
-        menu.posicion = posicion;
-        menu.icono = icono;
-        menu.link = link;
-        menu.updatedAt = dateToStringYMD(new Date());
-        menu.deletedAt = null;
+            const { nombre, menuPadreId, icono, posicion, link } = req.body;
+            const [ menu, created ] = await MenuModel.findOrCreate({ where: {id}});
 
-        await menu.save();
+            let isNuevo = menu.deletedAt === null ? created: true;
+            menu.nombre = nombre;
+            menu.menuPadreId = menuPadreId;
+            menu.posicion = posicion;
+            if(icono){
+                menu.icono = icono;
+            }
+            menu.link = link;
+            menu.updatedAt = dateToStringYMD(new Date());
+            menu.deletedAt = null;
 
-        res.json({mensaje: `El menú ha sido ${isNuevo ? 'creado' : 'actualizado'} exitosamente.`, data: menu});
+            await menu.save();
+
+            res.json({mensaje: `El menú ha sido ${isNuevo ? 'creado' : 'actualizado'} exitosamente.`, data: menu});
+        }
     }catch(e){
         res.status(500).json({error: 'Ocurrio un error al intentar actualizar el registro: '+e.message, data: e});
     }
@@ -204,4 +224,39 @@ export const softDeleteMenus = async (req, res) => {
     }catch(e){
         res.status(500).json({mensaje: 'Ocurrio un error al intentar borrar el registro: '+e.message, data: e});
     }
+}
+
+const validaDatos = async (id, data) => {
+    let error = '';    
+    try{
+        const { nombre, menuPadreId, link, posicion, icono } = data;
+        console.log('MENU PADRE ID =', menuPadreId);
+        switch(true){
+            case !nombre || nombre.length === 0:
+                error = 'Debes ingresar un nombre de menú.';
+                break;
+            case nombre || nombre.length < 3:
+                error = 'El nombre del menú debe tener entre 3 y 50 car+acteres, Ingresa un nombnre más largo.';
+                break;
+            case nombre || nombre.length > 50:
+                error = 'El nombre del menú debe tener entre 3 y 50 car+acteres, Ingresa un nombnre más corto.';
+                break;
+            case posicion === null:
+                error = 'Debes ingresar la posición del menú.';
+                break;
+            case posicion !== null && parseInt(posicion) < 0:
+                error = 'La posición debe ser un número positivo.';
+                break;
+            default:
+                if(menuPadreId !== null && menuPadreId !== 'null'){
+                    const menuPadre = await MenuModel.findByPk(menuPadreId);
+                    if(menuPadre === null) error= 'El menú padre no existe.';
+                    if(menuPadreId === id) error= 'El menú padre no puede ser el mismo menú.';
+                }
+        }
+    }catch(err){
+        error = err.message;        
+    }
+    //console.log('validaDatos = ',error);
+    return error;
 }

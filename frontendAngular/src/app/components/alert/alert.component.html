@@ -1,0 +1,6 @@
+<div *ngIf="_alertasService.mostrar" [class]="'alert alert-' + _alertasService.tipo + ' alert-dismissible fade show'" role="alert">
+    <strong>{{ _alertasService.titulo }}</strong> {{ _alertasService.mensaje }}
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span (click)="ocultar()">&times;</span>
+    </button>
+</div>

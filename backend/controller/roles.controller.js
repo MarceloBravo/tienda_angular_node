@@ -79,7 +79,7 @@ export const getRolesId = async (req,res) => {
     }
 }
 
-export const postRoles = async (req,res) => {
+export const createRol = async (req,res) => {
     try{
         const { nombre } = req.body;
         const data = await RolModel.create({nombre});

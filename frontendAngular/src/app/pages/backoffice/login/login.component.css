@@ -1,0 +1,43 @@
+.login-container{
+  background: #222e3c;
+  display: flex !important;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  position: absolute;
+  align-items: center;
+  display: flex;
+}
+
+.d-flex{
+  height: fit-content;
+}
+
+.content-login{
+  display: flex !important;
+  justify-content: center;
+}
+
+.login-form{
+  width: 400px;
+  border: #eaeaea solid thin;
+  box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.52);
+  -webkit-box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.52);
+  -moz-box-shadow: 10px 10px 5px -4px rgba(0,0,0,0.52);
+}
+
+.login-form > div:first-child{
+  padding: 2.25rem 1.25rem 0px 1.25rem;  
+}
+
+.login-form > div{  
+  background: white;
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}
+
+.login-form h1,
+.login-form p{
+  margin-bottom: 0px;
+}

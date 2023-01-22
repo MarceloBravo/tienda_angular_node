@@ -1,0 +1,14 @@
+::ng-deep body{
+  margin: 0px;
+  justify-content: center;
+  display: block !important;
+}
+
+::ng-deep body {
+  overflow-y: auto !important;
+}
+
+::ng-deep body app-root{
+  display: contents;
+  align-items: normal;
+}

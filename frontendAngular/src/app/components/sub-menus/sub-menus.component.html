@@ -1,0 +1,11 @@
+<li [id]="'mnu'+mnu.id" *ngFor="let mnu of subMenu" class="sidebar-item">
+  <ul *ngIf="mnu.submenus && mnu.submenus.length > 0">
+    <label (click)="expandMenu(mnu.id)"><img *ngIf="mnu.icono" [src]="srcImages + mnu.icono" [alt]="mnu.icono">{{ mnu.nombre }}</label>
+    <app-sub-menus [subMenu]="mnu.submenus"></app-sub-menus>
+  </ul>
+
+  <a *ngIf="!mnu.submenus || mnu.submenus.length === 0" class="sidebar-link" [routerLink]="mnu.link">
+    <img *ngIf="mnu.icono" [src]="srcImages + mnu.icono" [alt]="mnu.icono">{{ mnu.nombre }}
+  </a>
+
+</li>

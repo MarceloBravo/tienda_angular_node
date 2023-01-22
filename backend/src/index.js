@@ -5,11 +5,13 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';  //Necesario para atender las peticiones post
+import formidable from 'express-formidable';  //Necesario para atender las peticiones post
 
 import rolesRoutes from '../routes/roles.routes.js';
 import usuariosRoutes from '../routes/usuarios.routes.js';
 import loginRoutes from '../routes/login.routes.js';
 import menusRoutes from '../routes/menus.routes.js';
+//import fileupload from 'express-fileupload';
 import { sequelize } from '../db/database.js';
 
 
@@ -23,6 +25,8 @@ export default app;
 app.use(cors());
 app.use(express.static(path.join(__dirname,'../public'))); 
 
+//app.use(fileupload());
+
 //const { resolve } = require('path');
 
 app.set('host', '192.168.1.151');
@@ -30,6 +34,8 @@ app.set('port', process.env.PORT || 3001);
 
 //middlewares
 app.use(morgan('dev')); //Utiliza morgan en modo de develop para mostrar los mensajes por consola
+app.use(bodyParser.urlencoded({ extended: true }));
+//app.use(formidable());
 app.use(bodyParser.json()); //Permite recibir y entender los datos recibidos como objeto JSON
 
 app.use(rolesRoutes);

@@ -1,0 +1,15 @@
+<nav id="sidebar" [class]="'sidebar js-sidebar ' + (isMenuVisible === false ? 'hide-sidebar' : 'show-sidebar')">
+  <div class="sidebar-content js-simplebar">
+    <a class="sidebar-brand" href="index.html">
+      <span class="align-middle">AdminKit</span>
+    </a>
+
+    <ul class="sidebar-nav">
+      <li [id]="'mnu'+mnu.id" *ngFor="let mnu of menus" [class]="mnu.submenu.length === 0 ? 'sidebar-item' : 'sidebar-header'">
+        <label (click)="expandMenu('mnu'+mnu.id)" class="mnu-clickeable"><img *ngIf="mnu.icono" [src]="srcImages + mnu.icono" [alt]="mnu.icono">{{ mnu.nombre }}</label>
+        <app-sub-menus [subMenu]="mnu.submenu"></app-sub-menus>
+      </li>
+    </ul>
+
+  </div>
+</nav>

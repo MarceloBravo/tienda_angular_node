@@ -1,0 +1,9 @@
+.alert{
+    min-height: 50px;
+    align-items: center;
+    padding: 10px;
+}
+
+strong{
+    padding-right: 10px;
+}

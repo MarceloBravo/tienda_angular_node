@@ -1,0 +1,20 @@
+.card-container{
+    padding: 10px;
+}
+
+.titulo-grid{
+    font-size: x-large;
+}
+
+.col-accion{
+    width: 150px;
+}
+
+.icon-button{
+    width: 20px;
+    cursor: pointer;
+}
+
+.image-field{
+    background-color: #565454;
+}

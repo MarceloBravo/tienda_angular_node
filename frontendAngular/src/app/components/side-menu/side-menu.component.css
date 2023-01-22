@@ -1,0 +1,21 @@
+.mnu-clickeable{
+  cursor: pointer;
+}
+
+.sidebar, .sidebar-content{
+  z-index: 10;
+  -webkit-transition-duration: all .5s ease-in-out !important;
+  -moz-transition-duration: all .5s ease-in-out !important;
+  -o-transition-duration: all .5s ease-in-out !important;
+  transition-duration: all .5s ease-in-out !important;
+}
+
+.show-sidebar{
+  left: 0px;
+  position: relative;
+}
+
+.hide-sidebar{
+  position: absolute;
+  left: -260px;
+}

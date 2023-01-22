@@ -1,0 +1,31 @@
+<app-modal-dialog 
+    [titulo]="'Eliminar'"
+    [mensaje]="'¿Desea eliminar el registro?'"
+    [showModal]="mostrarModal"
+    (cancelarClick)="responseModal($event)"
+    (aceptarClick)="responseModal($event)"
+></app-modal-dialog>
+
+<app-alert></app-alert>
+
+<div class="col-12">
+    <div class="card card-container">
+        <div class="card-header">
+            <h5 class="card-title titulo-grid">Mantenedor de Menús</h5>
+            <!-- <h6 class="card-subtitle text-muted">Use contextual classes to color table rows or individual cells.</h6> -->
+        </div>
+            
+        <app-grid
+            [data]="gridData"
+            [filasPorPagina]="paginacion.filasPorPagina"
+            (nuevoClick)="nuevo()"
+            (buscarChange)="textoBuscarChange($event)"
+            (editarClick)="editar($event)"
+            (eliminarClick)="eliminar($event)"
+            (filasPorPaginaChange)="changeRowsVisibles($event)"
+        ></app-grid>
+ 
+    </div>
+    <app-paginacion [paginaActual]="paginacion.paginaActual" [totalPaginas]="paginacion.totPaginas" [paginasVisibles]="5" (clickPage)="pageChange($event)"></app-paginacion>
+</div>
+<!-- https://icons8.com/icons/set/trash -->

@@ -3,14 +3,14 @@
 
 # Compiled output
 /frontend/dist
-/frontend/tmp
-/frontend/out-tsc
-/frontend/bazel-out
+/frontendAngular/tmp
+/frontendAngular/out-tsc
+/frontendAngular/bazel-out
 
 # Node
-/frontend/node_modules
-/frontend/npm-debug.log
-/frontend/yarn-error.log
+/frontendAngular/node_modules
+/frontendAngular/npm-debug.log
+/frontendAngular/yarn-error.log
 
 backend/node_modules
 
@@ -32,13 +32,13 @@ backend/node_modules
 .history/*
 
 # Miscellaneous
-/frontend/.angular/cache
-/frontend/.sass-cache/
-/frontend/connect.lock
-/frontend/coverage
-/frontend/libpeerconnection.log
-/frontend/testem.log
-/frontend/typings
+/frontendAngular/.angular/cache
+/frontendAngular/.sass-cache/
+/frontendAngular/connect.lock
+/frontendAngular/coverage
+/frontendAngular/libpeerconnection.log
+/frontendAngular/testem.log
+/frontendAngular/typings
 
 # System files
 .DS_Store

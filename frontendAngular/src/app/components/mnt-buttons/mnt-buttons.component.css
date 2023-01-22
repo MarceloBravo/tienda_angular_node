@@ -1,0 +1,10 @@
+.button-group{
+    position: absolute;
+    right: 0px;
+    display: flex;
+    justify-content: right;
+}
+
+.btn{
+    margin: 0px 5px;
+}
