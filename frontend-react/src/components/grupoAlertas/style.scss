@@ -1,0 +1,13 @@
+
+
+.grupoAlertasContainer{
+    position: absolute;
+    right: 10px;
+
+    .alert{
+        position: relative !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

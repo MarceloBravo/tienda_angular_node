@@ -2,7 +2,7 @@
 #REPO: https://github.com/MarceloBravo/tienda2022_angular_node.git
 
 # Compiled output
-/frontend/dist
+/frontendAngular/dist
 /frontendAngular/tmp
 /frontendAngular/out-tsc
 /frontendAngular/bazel-out
@@ -43,3 +43,28 @@ backend/node_modules
 # System files
 .DS_Store
 Thumbs.db
+
+
+
+# dependencies
+/frontend-react/node_modules
+/frontend-react/.pnp
+/frontend-react/.pnp.js
+
+# testing
+/frontend-react/coverage
+
+# production
+/frontend-react/build
+
+# misc
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+/frontend-react/npm-debug.log*
+/frontend-react/yarn-debug.log*
+/frontend-react/yarn-error.log*
+
