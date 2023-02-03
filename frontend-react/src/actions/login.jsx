@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { setLogin } from '../redux/slices/loginSlices';
 import { endPoint, config } from '../shared/constants';
-const localhost = '192.168.1.1:3000'
+const localhost = '192.168.1.1:3000';
 
 
 export const login = (email, password, remember = false) => async (dispatch) => {
