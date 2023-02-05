@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { setLogin } from '../redux/slices/loginSlices';
+import { setError } from '../redux/slices/errorSlices';
 import { endPoint, config } from '../shared/constants';
 const localhost = '192.168.1.1:3000';
 
@@ -12,7 +13,8 @@ export const login = (email, password, remember = false) => async (dispatch) => 
         dispatch(setLogin(JSON.parse(atob(resp.data.access_token.split('.')[1]))));
     })
     .catch(error => {
-        console.log('Error login', error);
+        dispatch(setError(error.response.data));
+        console.log('Error login', error);        
     })   
 }
 

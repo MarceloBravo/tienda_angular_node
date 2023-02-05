@@ -8,7 +8,7 @@ export const AlertaContent = (props) => {
         <>
             {display && 
                 <div className={"alert alert-" + (tipo ? tipo : 'primary') + " alert-dismissible fade show"} role="alert">
-                    <strong>{ titulo }</strong> { mensaje }
+                    <label><strong>{ titulo }</strong> { mensaje }</label>
                     <button type="button" className="close" data-dismiss="alert" onClick={() => cerrar()}>
                         <span aria-hidden="true">&times;</span>
                     </button>

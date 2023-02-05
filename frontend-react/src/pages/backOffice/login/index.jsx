@@ -9,6 +9,7 @@ export const LoginPage = () => {
     const [ password, setPassword ] = useState('');
     const [ remember, setRemember ] = useState(false);
     const loginState = useSelector( state => state.login.data);
+    const errorState = useSelector( state => state.error.data);
     const [ alertas, setAlertas ] = useState([]);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -21,6 +22,14 @@ export const LoginPage = () => {
         }
     // eslint-disable-next-line
     },[loginState]);
+
+    useEffect(()=>{
+        console.log('errorState',errorState)
+        if(errorState !== undefined && errorState !== null){
+            setAlertas([...alertas, {tipo:'danger', mensaje: errorState.mensaje, titulo: 'Error', display: true}])
+        }
+    // eslint-disable-next-line
+    },[errorState])
 
     const emailHandler = (e) => {
         setEmail(e.target.value);
