@@ -1,8 +1,8 @@
 import React from 'react';
-import { BackSubMenu } from '../backSubMenus/backSubMenus';
+import { BackSubMenu } from '../backendSubMenus/backendSubMenus';
 import './style.scss';
 
-export const BackendLeftMenuContent = (props) => {
+export const LeftMenuBackendContent = (props) => {
     const { isMenuVisible, backendMenu, srcImages, expandMenu } = props;
 
     return (

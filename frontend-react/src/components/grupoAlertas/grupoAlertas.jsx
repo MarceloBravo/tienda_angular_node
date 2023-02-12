@@ -7,8 +7,8 @@ export const  GrupoAlertasComponent = (props) => {
 
     return (
         <div className="grupoAlertasContainer">
-            { alertas && alertas.map( a => {
-                return <AlertComponent titulo={a.titulo} mensaje={a.mensaje} tipo={a.tipo} mostrar={true}/>
+            { alertas && alertas.map( (a, key) => {
+                return <AlertComponent key={key} titulo={a.titulo} mensaje={a.mensaje} tipo={a.tipo} mostrar={true}/>
             })} 
         </div>
     );

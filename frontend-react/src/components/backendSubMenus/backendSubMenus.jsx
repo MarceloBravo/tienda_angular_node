@@ -32,10 +32,10 @@ export const BackSubMenu = (props) => {
                     </ul>}
 
                     {(!mnu.submenus || mnu.submenus.length === 0) && 
-                        <a className="sidebar-link" onClick={e => redirectTo(mnu.link)}>
+                        <label className="sidebar-link" onClick={e => redirectTo(mnu.link)}>
                             {mnu.icono && <img src={srcImages + mnu.icono} alt={mnu.icono}/>}
                             { mnu.nombre }
-                        </a>
+                        </label>
                     }
                 </li>
             })

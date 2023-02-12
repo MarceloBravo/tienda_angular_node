@@ -1,0 +1,17 @@
+.content-app{
+    display: flex;
+    flex-wrap: wrap;
+    background-color: #e2e2e2;
+
+    .main-content{
+        width: calc(100% - 260px);
+    }
+
+    .mnu-is-open{
+        width: calc(100% - 260px);
+    }
+    
+    .mnu-is-closed{
+        width: 100%;
+    }
+}

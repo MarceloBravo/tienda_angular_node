@@ -1,19 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getBackendMenu } from '../../actions/backMainMenu';
 import { config } from '../../shared/constants';
-import { BackendLeftMenuContent } from './content.jsx';
-import './style.scss';
+import { LeftMenuBackendContent } from './content.jsx';
 
-export const BackendLeftMenu = (props) => {
+export const LeftMenuBackend = (props) => {
     const backendMenu = useSelector(state => state.backendMenu.data.rows );
     const srcImages = config.imagesStorage + '/menus/';
-    const [ isMenuVisible, setIsMenuVisible ] = useState(true);
+    const isMenuVisible = useSelector(state => state.backendMenu.togle);
+    const isRememberMe = useSelector(state => state.login.rememberMe);
+    const isLogout = useSelector(state => state.login.isLogout);
     const dispatch = useDispatch();
 
+    useEffect(()=> {
+        if(isMenuVisible !== undefined){
+            console.log(isMenuVisible ? 'visible' : 'oculto')
+        }else{
+            console.log('NO DETECTADO')
+        }
+    },[isMenuVisible])
+
     useEffect(()=>{
-        dispatch(getBackendMenu(null, false));
-    },[dispatch])
+        if(!isLogout){
+            dispatch(getBackendMenu(null, isRememberMe));
+        }
+    },[dispatch, isRememberMe, isLogout])
 
     const expandMenu = (e) => {     
         //setClassname(classname === 'open' ? 'closed' : 'open');
@@ -27,7 +38,7 @@ export const BackendLeftMenu = (props) => {
 
 
     return (
-        <BackendLeftMenuContent 
+        <LeftMenuBackendContent 
             isMenuVisible={isMenuVisible} 
             backendMenu={backendMenu}
             srcImages={srcImages}

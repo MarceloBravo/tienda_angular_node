@@ -7,7 +7,9 @@ export const backendMenuSlice = createSlice({
         data: {
             count: 0,
             rows: []
-        }
+        },
+
+        togle: true
     },
 
     reducers: {
@@ -15,12 +17,20 @@ export const backendMenuSlice = createSlice({
             state.data = action.payload;
         },
 
+        setTogleMenu: (state, action) => {
+            state.togle = action.payload;
+        },
+
         getbackendMenu: (state) => {
             return state.data;
+        },
+
+        getTogleMenu: (state) => {
+            return state;
         }
     }
 });
 
-export const { setbackendMenu, getbackendMenu } = backendMenuSlice.actions;
+export const { setbackendMenu, setTogleMenu, getbackendMenu, getTogleMenu } = backendMenuSlice.actions;
 
 export default backendMenuSlice.reducer;
