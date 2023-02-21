@@ -1,5 +1,6 @@
 import axios from 'axios';
-import { endPoint, config } from '../constants/global.js';
+import { endPoint, config } from '../shared/global.js';
+import { saveToken } from '../shared/functions.js';
 
 export const login = (store, email, password, remember = false) => {
     axios
@@ -18,16 +19,3 @@ export const login = (store, email, password, remember = false) => {
     });
 }
 
-const saveToken = (remember, data) => {
-    if(remember === true){
-        localStorage.setItem(config.appName, data.access_token);
-        localStorage.setItem(config.appName+'refresh_token', data.refresh_token);
-        sessionStorage.removeItem(config.appName);
-        sessionStorage.removeItem(config.appName + 'refresh_token');
-    }else{
-        sessionStorage.setItem(config.appName, data.access_token);
-        sessionStorage.setItem(config.appName + 'refresh_token', data.refresh_token);
-        localStorage.removeItem(config.appName);
-        localStorage.removeItem(config.appName + 'refresh_token');
-    }
-}

@@ -1,6 +1,9 @@
 <template>
-    <div>
-        Este es home.
+    <div class="content-app">
+        <AdminLeftMenu></AdminLeftMenu>
+        <div class="mnu-is-open">
+            Este es home.
+        </div>
     </div>
 </template>
 
@@ -9,8 +12,14 @@
 </style>
 
 <script>
+    import AdminLeftMenu from '@/components/adminLeftMenu/adminLeftMenu.vue';
+
     export default {
-        name: 'homePage'
+        name: 'homePage',
+
+        components:{
+            AdminLeftMenu
+        }
     }
 
 </script>

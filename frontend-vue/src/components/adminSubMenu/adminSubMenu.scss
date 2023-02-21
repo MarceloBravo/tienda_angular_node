@@ -1,0 +1,39 @@
+.sidebar-link:hover, 
+.sidebar-link:hover i, 
+.sidebar-link:hover 
+svg {
+    color: rgba(233,236,239,.75);
+}
+
+.sidebar-link:hover {
+    background: #222e3c;
+    border-left-color: transparent;
+}
+
+.sidebar-link, 
+a.sidebar-link {
+    display: block;
+    padding: 0.625rem 1.625rem;
+    font-weight: 400;
+    transition: background .1s ease-in-out;
+    position: relative;
+    text-decoration: none;
+    cursor: pointer;
+    color: rgba(233,236,239,.5);
+    background: #222e3c;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-link img, 
+a.sidebar-link img {
+    margin: 0 10px;
+    width: 20px;
+}
+    
+.sidebar-link img, 
+a.sidebar-link img
+.sidebar-link svg, 
+a.sidebar-link svg{
+    vertical-align: middle;
+}
+
