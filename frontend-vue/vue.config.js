@@ -15,4 +15,12 @@ module.exports = defineConfig({
   },
 
   publicPath: "./",
+
+  css: {
+    loaderOptions: {
+      sass: {
+        additionalData: `@import "style/index.scss";`
+      }
+    }
+  }
 })

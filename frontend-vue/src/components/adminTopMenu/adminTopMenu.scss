@@ -1,0 +1,76 @@
+.navbar{
+    align-content: center;
+    flex-direction: row;
+    width: 100%;
+    height: 50px;
+    justify-content: space-between !important;
+    background-color: white;
+
+    label{
+        .hamburger{
+            cursor: pointer;
+        }
+    }
+    
+    .menu {
+        display: block !important;
+        cursor: pointer;
+        width: 50px;
+        padding: 0px 10px;
+
+        .bar1, .bar2, .bar3 {
+            width: 34px;
+            height: 4px;
+            background-color: #333;
+            margin: 6px 0;
+            transition: 0.4s;
+            border-radius: 10px;
+        }
+
+        .bar3{
+            width: 25px;
+        }
+      }
+
+    .change {
+        .bar1 {
+            transform: translate(0, 11px) rotate(-45deg);
+        }
+
+        .bar2 {
+            opacity: 0;
+        }
+
+        .bar3 {
+            width: 34px;
+            transform: translate(0, -11px) rotate(45deg);
+        }
+    }
+
+    .navbar-info{
+        .navbar-nav{
+            .nav-item{
+                .nav-link{
+                    
+                    cursor: pointer;
+
+                    .avatar{
+                        width: 40px;
+                        height: 40px;
+                    }
+
+                    .text-dark{
+                        cursor: pointer;
+                    }
+                }
+                .dropdown-menu{
+                    position: absolute;
+                    width: 150px;
+                    right: 5px;
+                    display: block;
+                }
+            
+            }
+        }
+    }
+}

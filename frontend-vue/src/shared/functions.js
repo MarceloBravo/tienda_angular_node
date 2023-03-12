@@ -22,3 +22,18 @@ export const saveToken = (remember, data) => {
         localStorage.removeItem(config.appName + 'refresh_token');
     }
 }
+
+export const getRememberToken = (remember) => {
+    if(remember === true){
+        return localStorage.getItem(config.appName+'refresh_token');
+    }else{
+        return sessionStorage.getItem(config.appName+'refresh_token');
+    }
+}
+
+export const clearTokens = () => {
+    sessionStorage.removeItem(config.appName + '-token');
+    sessionStorage.removeItem(config.appName + 'refresh_token');
+    localStorage.removeItem(config.appName + '-token');
+    localStorage.removeItem(config.appName + 'refresh_token');   
+}

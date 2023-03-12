@@ -27,6 +27,6 @@
     export default AdminLeftMenu;
 </script>
 
-<style type="scss">
+<style lang="scss">
     @import './adminLeftMenu.scss';
 </style>

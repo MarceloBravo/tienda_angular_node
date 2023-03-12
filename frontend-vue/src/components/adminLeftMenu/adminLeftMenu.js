@@ -10,10 +10,6 @@ export default {
         AdminSubMenu
     },
 
-    props: {
-
-    },
-
     data(){
         return {
             isMenuVisible: true,
@@ -24,7 +20,7 @@ export default {
     },
 
     computed:{
-        ...mapGetters(['getMenu'])
+        ...mapGetters(['getMenu','getRememberMe'])
     },
 
 
@@ -46,11 +42,16 @@ export default {
             if(this.getMenu && this.getMenu.count > 0){
                 this.menus = this.getMenu.rows;
             }
+        },
+
+        getRememberMe: function(){
+            
         }
     },
 
     mounted(){
-        loadMenu(this.$store, null, true);
+        console.log(this.getRememberMe ? 'recordarme': 'no recordarme');
+        loadMenu(this.$store, null, this.getRememberMe);
     }
 
 }

@@ -1,5 +1,4 @@
 <template>
-    
         <li v-for="(mnu, key) in subMenu" :key="key" :id="'mnu'+mnu.id" className="sidebar-item">
             <ul v-if="mnu.subMenus && mnu.subMenus.length > 0">
                 <label :click="expandMenu(mnu.id)">
@@ -21,48 +20,10 @@
 </template>
 
 <script>
-    import { config } from '@/shared/global';
-    
-    export default {
-
-        name: 'AdminSubMenu',
-
-        props:{
-            subMenu: []
-        },
-        
-        data(){
-            return {
-                srcImages: config.imagesStorage + '/menus/'
-            }
-
-        },
-
-        computed:{
-
-        },
-
-        methods: {
-            expandMenu: ($e)=>{
-                console.log('expandMenu',$e);
-            },
-
-            redirectTo:($e) => {
-                console.log('redirectTo',$e);
-            }
-        },
-
-        watch:{
-
-        },
-
-        mounted(){
-
-        }
-
-    }
+    import AdminSubMenu from './adminSubMenu.js';
+    export default AdminSubMenu;
 </script>
 
-<style type="scss">
+<style lang="scss">
     @import './adminSubMenu.scss';
 </style>

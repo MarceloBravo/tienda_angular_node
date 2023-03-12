@@ -6,7 +6,7 @@ export const loadMenu = (store, mnuId, isRememberMe) => {
     axios
     .get(endPoint+ '/menus/parent/' + mnuId, {headers: headers(isRememberMe)})
     .then(resp => {
-        console.log('GET MENU RESPONSE:', resp.data);
+        //console.log('GET MENU RESPONSE:', resp.data);
         store.dispatch('menu', resp.data);
     }).catch(error => {
         console.log('GET MENU ERROR: ',error);
