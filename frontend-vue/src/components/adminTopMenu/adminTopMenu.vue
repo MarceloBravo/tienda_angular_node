@@ -1,7 +1,7 @@
 <template>
     <nav class="navbar navbar-expand navbar-light navbar-bg">
             
-            <div class="menu change" @click="togleMenu">
+            <div :class="'menu ' + (showLeftMenu ? 'change' : '')" @click="togleMenu">
                 <div class="bar1"></div>
                 <div class="bar2"></div>
                 <div class="bar3"></div>
@@ -47,7 +47,8 @@ export default {
         return {
             togleMenuPerfil: false,
             imagesPath: config.imagesStorage,
-            usuario: null
+            usuario: null,
+            showLeftMenu: true
         }
     },
 
@@ -60,8 +61,9 @@ export default {
     },
 
     methods: {
-        togleMenu: function($e){
-            console.log('togleMenu',$e);
+        togleMenu: function(){
+            this.showLeftMenu = !this.showLeftMenu;
+            this.$store.dispatch('toggleLeftAdminMenu',this.showLeftMenu);
         },
 
         menuPerfilToggle: function(){

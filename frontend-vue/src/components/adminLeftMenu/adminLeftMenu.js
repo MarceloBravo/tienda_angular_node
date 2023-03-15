@@ -20,7 +20,7 @@ export default {
     },
 
     computed:{
-        ...mapGetters(['getMenu','getRememberMe'])
+        ...mapGetters(['getMenu','getRememberMe','getShowLeftAdminMenu'])
     },
 
 
@@ -46,6 +46,10 @@ export default {
 
         getRememberMe: function(){
             
+        },
+
+        getShowLeftAdminMenu: function(){
+            this.isMenuVisible = this.getShowLeftAdminMenu;
         }
     },
 
